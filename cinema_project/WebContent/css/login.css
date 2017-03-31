@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+#wrap{ width:1000px; padding: 0; text-align: center;}
+#logo{margin-top: 40px;}
+#logo img{ width: 300px;}
+/* 폼태크 */
+#form1 { width: 460px; border: 1px solid #EAEAEA; margin: 0 auto; margin-top: 80px;}
+#form2 { width: 460px; border: 1px solid #EAEAEA; margin: 0 auto; margin-top: 20px;}
+#form3 { width: 460px; margin: 0 auto; margin-top: 40px;}
+.form-group { padding: 10px 15px 10px 15px; border-bottom: 1px solid #EAEAEA; margin: 0px;}
+input[type=text], input[type=password], input[type=submit] { border: none; box-shadow: none;}
+input[type=submit] { width: 460px; height: 60px; background-color: #3F0099; color: white;}
+/* 푸터 */
+#loginOption { border-top: 1px solid #EAEAEA; width: 458px; margin: 0 auto; margin-top: 50px;}
+#loginOption p { padding-top: 30px; color: #A6A6A6;}
+#banner { margin-top: 100px;}
+#footer{ margin-top: 50px; margin-bottom: 20px;}
+#footer img { width: 60px; margin-right: 20px;}
+
+.error { display: none;	color: red;	padding: 0;	margin: 0 0 0 0; font-size: 12px;}
+
+.error2 { color: red; padding: 0; margin: 0 0 0 90px; font-size: 12px;}

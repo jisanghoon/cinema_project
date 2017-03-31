@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+/* 네비게이션 바 */
+#header {width: 1000px; padding:0px;}
+.navbar-brand {padding-top: 10px; padding-right: 30px;}
+.navbar-default {background-color: white;}
+#menu li {border-left: 1px solid #EAEAEA; width: 112px; height: 49px; text-align: center;}
+#liLogin {border-right: 1px solid #EAEAEA; width: 158px !important;}
+#menu li a {font-weight: bold;}
+/* 메인 비주얼 */
+#mainMargin {margin-top: 50px;}
+#main {padding: 0px; background-image: url("../image/mainpng.png"); height: 600px; background-size: cover;}
+/* 메뉴 */
+#book {width: 1000px; padding: 0px; text-align: center; padding-top: 50px;}
+#bookPadding {padding: 0px;}
+/* 영화 */
+#movie {width: 1000px; /* padding: 0px; */ padding-top: 50px;}
+#moviePadding {padding: 0px;}
+#list {width: 232px; height: 458px; margin: 0px; display: inline-block; margin-right: 20px; border: 1px solid #EAEAEA; text-align: center;}
+#list img {width: 230px;}
+#listLast {width: 232px; height: 458px; margin: 0px; display: inline-block; border: 1px solid #EAEAEA; text-align: center;}
+#listLast img {width: 230px;}
+
+#footer {height: 500px; background-color: #4C4C4C;}
