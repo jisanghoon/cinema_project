@@ -30,7 +30,7 @@
 
 
 	<div class="container">
-		<sub>요금을 추가로 등록할 때, ticketPrice데이터가 존재하는지 체크해줘서 존재하면 추가 안되게 처리해야됨.</sub> <br> <br>
+		<!-- <sub>요금을 추가로 등록할 때, ticketPrice데이터가 존재하는지 체크해줘서 존재하면 추가 안되게 처리해야됨.</sub> --> <br> <br>
 
 
 		<c:if test="${ empty ticketPrice }">
@@ -143,7 +143,7 @@
 				<label class="radio-inline">
 					<input type="radio" name="cateScreen" value="atmos 3d" ${ticketPrice.cateScreen == 'atmos 3d' ? 'checked' : ''}> ATMOS 3D 
 				</label>
-				<a href="#" class="btn  btn-sm plus_icon"> <span class="glyphicon glyphicon-plus"></span>항목추가
+	<!-- 			<a href="#" class="btn  btn-sm plus_icon"> <span class="glyphicon glyphicon-plus"></span>항목추가 -->
 				</a>
 			</div>
 
@@ -153,7 +153,7 @@
 
 		<div class="form-group ">
 			<label for="cateSeat" class="control-label col-sm-2">좌석 구분</label>
-			<div class="col-sm-9 item_line">
+			<div class="col-sm-10 item_line">
 
 				<label class="radio-inline">
 					<input type="radio" name="cateSeat" value="normal" ${ticketPrice.cateSeat == 'normal' ? 'checked' : ''} checked> 일반 좌석
@@ -181,8 +181,8 @@
 
 			</div>
 
-			<a href="#" class="btn  btn-sm col-sm-1"> <span class="glyphicon glyphicon-plus"></span> Plus
-			</a>
+			<!-- <a href="#" class="btn  btn-sm col-sm-1"> <span class="glyphicon glyphicon-plus"></span> Plus
+			</a> -->
 
 		</div>
 
@@ -206,11 +206,11 @@
 		</div>
 
 		<br> <br> <br>
-		<div class="form-group">
+<!-- 		<div class="form-group">
 			<div class="col-sm-10 col-sm-offset-2">
 				<h1>저장 버튼 클릭 시 데이터 존재 확인</h1>
 			</div>
-		</div>
+		</div> -->
 		<div class="form-group">
 			<label for="price" class="control-label col-sm-2">요금</label>
 			<div class="col-sm-10 ">

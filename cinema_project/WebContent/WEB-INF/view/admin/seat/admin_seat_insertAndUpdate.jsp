@@ -185,7 +185,7 @@
 
 	<div class="container">
 		<h1>좌석 등록</h1>
-		<sub>1. 체크박스 위치 조정 필요</sub> <br> <sub>2. 큰 좌석 명 글자 간격 조정 필요</sub> <br> <br>
+		<!-- <sub>1. 체크박스 위치 조정 필요</sub> <br> <sub>2. 큰 좌석 명 글자 간격 조정 필요</sub>  --><br> <br>
 
 
 		<!-- 		<form class="form-horizontal" method="post" action="seatWrite.do" name="form_write"> -->

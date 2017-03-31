@@ -20,7 +20,7 @@ th, td {
 	<jsp:include page="/cinemaHeader.jsp"></jsp:include>
 
 	<div class="container ">
-		<h3>상세 페이지 필요 / 수정 없음 / 삭제만!</h3>
+		<!-- <h3>상세 페이지 필요 / 수정 없음 / 삭제만!</h3> -->
 		<div class="row full-right">
 			<div class="col-lg-1 pull-right">
 				<a href="seatWrite.do" class="btn btn-primary" role="button">좌석 추가</a>

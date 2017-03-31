@@ -80,10 +80,12 @@ on s.audi_no=a.audi_no;
 
 
 		
+select * from seating where audi_no = 1;
+
+
+select * from auditorium ;
 		
-		
-		
-		
+select * from ticket_price;
 		
 		
 		

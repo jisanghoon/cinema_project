@@ -43,6 +43,7 @@ public class SelTimeHandler implements CommandHandler {
 			System.out.println("JSON값 : " + json);
 
 			// JSON 발신 res.setContentType("application/json;charset=utf-8");
+			res.setContentType("application/json;charset=utf-8");
 			PrintWriter pw = res.getWriter();
 			pw.print(json);
 			pw.flush();

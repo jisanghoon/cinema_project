@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cinema.model.Auditorium;
 import cinema.model.BookStepOne;
@@ -14,7 +16,9 @@ import cinema.model.Booking;
 import cinema.model.Movie;
 import cinema.model.Schedule;
 import cinema.model.Screen;
+import cinema.model.Seat;
 import cinema.model.Theater;
+import cinema.model.TicketPrice;
 import jdbc.JdbcUtil;
 
 public class BookingDao {
@@ -139,19 +143,17 @@ public class BookingDao {
 			if (rs.next()) {
 				List<BookStepOne> bookStepOnes = new ArrayList<>();
 				do {
-			
+
 					Theater theater = new Theater();
 					theater.setTheaterNo(rs.getInt("theater_no"));
 					theater.setTheaterName(rs.getString("theater_name"));
 
-			
 					Auditorium auditorium = new Auditorium();
 					auditorium.setAudiName(rs.getString("audi_name"));
 					auditorium.setAudiType(rs.getString("audi_type"));
 					auditorium.setFloor(rs.getString("floor"));
 					auditorium.setTheater(theater);
 
-	
 					Movie movie = new Movie();
 					movie.setMovieNo(rs.getInt("movie_no"));
 					movie.setKorTitle(rs.getString("title_kor"));
@@ -169,7 +171,6 @@ public class BookingDao {
 					movie.setSmallPicUrl(rs.getString("small_pic_url"));
 					movie.setBigPicUrl(rs.getString("big_pic_url"));
 
-
 					Screen screen = new Screen();
 
 					screen.setScreenNo(rs.getInt("screen_no"));
@@ -182,7 +183,6 @@ public class BookingDao {
 					screen.setStartDate(rs.getDate("start_date"));
 					screen.setEndDate(rs.getDate("end_date"));
 
-	
 					Schedule schedule = new Schedule();
 					schedule.setScheduleNo(rs.getInt("schedule_no"));
 					schedule.setStartTime(rs.getTime("start_time").toLocalTime());
@@ -230,13 +230,13 @@ public class BookingDao {
 					theater.setTheaterName(rs.getString("theater_name"));
 
 					Auditorium auditorium = new Auditorium();
+					auditorium.setAudiNo(rs.getInt("audi_no"));
 					auditorium.setFloor(rs.getString("floor"));
 					auditorium.setAudiName(rs.getString("audi_name"));
 					auditorium.setAudiType(rs.getString("audi_type"));
 					auditorium.setFloor(rs.getString("floor"));
 					auditorium.setTheater(theater);
-					
-					
+
 					Movie movie = new Movie();
 					movie.setMovieNo(rs.getInt("movie_no"));
 					movie.setKorTitle(rs.getString("title_kor"));
@@ -254,8 +254,6 @@ public class BookingDao {
 					movie.setSmallPicUrl(rs.getString("small_pic_url"));
 					movie.setBigPicUrl(rs.getString("big_pic_url"));
 
-					
-					
 					Screen screen = new Screen();
 
 					screen.setScreenNo(rs.getInt("screen_no"));
@@ -268,7 +266,6 @@ public class BookingDao {
 					screen.setStartDate(rs.getDate("start_date"));
 					screen.setEndDate(rs.getDate("end_date"));
 
-				
 					Schedule schedule = new Schedule();
 					schedule.setScheduleNo(rs.getInt("schedule_no"));
 					schedule.setStartTime(rs.getTime("start_time").toLocalTime());
@@ -276,8 +273,7 @@ public class BookingDao {
 					schedule.setShowDate(rs.getDate("show_date"));
 					schedule.setAuditorium(auditorium);
 					schedule.setScreen(screen);
-	
-					
+
 					bookStepOne = new BookStepOne(schedule, screen, movie, auditorium, theater);
 					bookStepOnes.add(bookStepOne);
 				} while (rs.next());
@@ -290,6 +286,108 @@ public class BookingDao {
 			JdbcUtil.close(pstmt);
 		}
 
+	}
+
+	// 좌석 선택
+	public List<Seat> selSeat(Connection conn, int audiNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select * from seating where audi_no = ?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, audiNo);
+			rs = pstmt.executeQuery();
+
+			Seat seat = null;
+			List<Seat> seats = new ArrayList<>();
+
+			while (rs.next()) {
+				seat = new Seat();
+				seat.setSeatNo(rs.getInt("seat_no"));
+				seat.setRow(rs.getInt("row"));
+				seat.setCol(rs.getInt("col"));
+				seat.setSeatName(rs.getString("seat_name"));
+				seat.setAuditoriumNo(rs.getInt("audi_no"));
+
+				seats.add(seat);
+			}
+			return seats;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+
+	}
+
+	public Map<String, Integer> selectForSeatCnt(Connection conn, int audiNo) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select count(distinct row) as rowCnt, count(distinct col) as colCnt from seating where audi_no=?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, audiNo);
+			rs = pstmt.executeQuery();
+
+			Map<String, Integer> seatMap = new HashMap<>();
+			if (rs.next()) {
+
+				seatMap.put("rowCnt", rs.getInt("rowCnt"));
+				seatMap.put("colCnt", rs.getInt("colCnt"));
+
+			}
+			return seatMap;
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+
+	}
+
+	public List<TicketPrice> selPrice(Connection conn, String cateTime) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "select * from ticket_price where cate_time = ?";
+		System.out.println(cateTime);
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cateTime);
+			rs = pstmt.executeQuery();
+			TicketPrice ticketPrice = null;
+			if (rs.next()) {
+				List<TicketPrice> ticketPrices = new ArrayList<>();
+				do {
+					/*
+					 * ticketPrice = new TicketPrice(rs.getInt("price_no"),
+					 * rs.getString("cate_day"), rs.getString("cate_time"),
+					 * rs.getString("cate_audi"), rs.getString("cate_Screen"),
+					 * rs.getString("cate_seat"), rs.getString("cate_age"),
+					 * rs.getInt("price"));
+					 */
+
+					ticketPrice = new TicketPrice();
+					ticketPrice.setPriceNo(rs.getInt("price_no"));
+					ticketPrice.setCateDay(rs.getString("cate_day"));
+					ticketPrice.setCateTime(rs.getString("cate_time"));
+					ticketPrice.setCateAudi(rs.getString("cate_audi"));
+					ticketPrice.setCateScreen(rs.getString("cate_Screen"));
+					ticketPrice.setCateSeat(rs.getString("cate_seat"));
+					ticketPrice.setCateAge(rs.getString("cate_age"));
+					ticketPrice.setPrice(rs.getInt("price"));
+
+					ticketPrices.add(ticketPrice);
+					System.out.println(ticketPrice);
+				} while (rs.next());
+				return ticketPrices;
+			} else {
+				return Collections.emptyList();
+			}
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
 	}
 
 }

@@ -209,7 +209,7 @@ input[type=checkbox]:checked+label {
 
 		$(document).on("click","#seatWrap input[type='checkbox']",function(){
 			if($("#selAge").val() == "") {
-				alert("선택");
+				//alert("선택");
 				return false;				
 				};
 			var dataNo = 0;
@@ -249,7 +249,7 @@ input[type=checkbox]:checked+label {
 			datatype : "json",
 			data : {"cateTime" : $("#cateTime").val()},
 			success : function(data) {
-				console.log(data);
+				console.log(data,"seat sel check");
 				var selPrice;
 
 				$("#selAge").html("<option value=''>선택 </option>");

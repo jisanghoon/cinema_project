@@ -170,14 +170,14 @@
 			<div class="col-sm-10">
 				<select class="form-control" id=screenNo name="screenNo">
 
-				</select> <sub>스크린의 수가 많아지면 찾기 어려워짐 / 콤버와 검색 혼합 필요</sub>
+				</select> <!-- <sub>스크린의 수가 많아지면 찾기 어려워짐 / 콤버와 검색 혼합 필요</sub> -->
 			</div>
 		</div>
 
 		<div class="form-group">
 			<label for="showDate" class="control-label col-sm-2">상영 날짜</label>
 			<div class="col-sm-10">
-				<input type="date" class="form-control" name="showDate" id="showDate" required value="${schedule.showDate }" placeholder="연도-월-일" /> <sub>중복 선택 할 수 있게 변경 필요 / 한 번에 많이 입력 할 수 있게 ...</sub>
+				<input type="date" class="form-control" name="showDate" id="showDate" required value="${schedule.showDate }" placeholder="연도-월-일" /> <!-- <sub>중복 선택 할 수 있게 변경 필요 / 한 번에 많이 입력 할 수 있게 ...</sub> -->
 			</div>
 
 		</div>
@@ -210,7 +210,7 @@
 				<input type="text" class="form-control selTime endTime" name="endTime" id="endTime" value="${schedule.endTime }" />
 
 			</div>
-			<sub>중복 선택 할 수 있게 변경 필요 / 한 번에 많이 입력 할 수 있게 ...</sub>
+			<!-- <sub>중복 선택 할 수 있게 변경 필요 / 한 번에 많이 입력 할 수 있게 ...</sub> -->
 		</div>
 
 

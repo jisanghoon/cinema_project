@@ -105,7 +105,7 @@
 <script src="js/sel_time.js"></script>
 <script type="text/javascript">
 	// 시간 선택
-	 function ajaxcall(where) {
+	function ajaxcall(where) {
 
 		var temp = $(where).parent().attr("data-item");/* yyyy-mm-dd */
 
@@ -115,15 +115,15 @@
 			url : "seltime.do",
 			type : "post",
 			timeout : 30000,
-			datatype : "json",
+			dataType : "json",
 			data : {
-					"theaterNo" : $("#theater option:selected").val(),
-					"movieNo" : $("#movie option:selected").val(),
-					"dateNo" : temp
-					},
+				"theaterNo" : $("#theater option:selected").val(),
+				"movieNo" : $("#movie option:selected").val(),
+				"dateNo" : temp
+			},
 			success : function(data) {
 				console.log(data);
-				
+
 				var movieTimes;
 				var movieNo;
 				var dayno;
@@ -133,71 +133,78 @@
 					movieTimes += " 조회된 영화가 없습니다. ";
 				}
 				$("#showTimes").html(movieTimes);
+				console.log(data.length)
 				for (var i = 0; i < data.length; i++) {
+					console.log(i + " : " + data[i]);
+					console.log(data[i].schedule);
 					console.log(data[i].schedule.startTime.hour)
-					movieTimes += "<tr><td>"
-								+ data[i].schedule.startTime.hour
-								+ ":"
-								+ data[i].schedule.startTime.minute
-								+ " ~ "
-								+ data[i].schedule.endTime.hour
-								+ ":"
-								+ data[i].schedule.endTime.minute
-								+ "</td><td><a href='#' data-scheduleNo="+data[i].schedule.scheduleNo+" onclick='scheduleNocall(this)' >"
-								+ data[i].schedule.screen.movie.korTitle
-								+ "</a></td><td>"
-								+ data[i].theater.theaterName + "<br>"
-								+ data[i].auditorium.audiName
-								+ "</td></tr>";
+					movieTimes += "<tr><td>" + data[i].schedule.startTime.hour
+							+ ":" + data[i].schedule.startTime.minute + " ~ "
+							+ data[i].schedule.endTime.hour + ":"
+							+ data[i].schedule.endTime.minute
+							+ "</td><td><a href='#' data-scheduleNo="
+							+ data[i].schedule.scheduleNo
+							+ " onclick='scheduleNocall(this)' >"
+							+ data[i].schedule.screen.movie.korTitle
+							+ "</a></td><td>" + data[i].theater.theaterName
+							+ "<br>" + data[i].auditorium.audiName
+							+ "</td></tr>";
 					movieNo = data[i].schedule.screen.movie.movieNo
 					scheduleNo = data[i].schedule.scheduleNo
 					audiNo = data[i].auditorium.audiNo
-					}
+					console.log(audiNo, "audiNo")
+				}
 				$("#showTimes").html(movieTimes);
 				$('input[name=audiNo]').attr('value', audiNo);
 				/* $('input[name=dayno]').attr('value', temp);
 				$('input[name=scheduleNo]').attr('value', scheduleNo); */
-				}
-					
-			});
+			}
+
+		});
 	}
-	
+
 	function scheduleNocall(where) {
 		var temp = $(where).attr("data-scheduleNo");
 		$("input[name=scheduleNo]").attr('value', temp);
-		}
-	
+	}
 
 	$(function() {
 		//극장선택
-		$("#theater").change(function() {
-			$.ajax({
-				url : "selmovie.do",
-				type : "post",
-				timeout : 30000,
-				datatype : "json",
-				data : {
-						"theaterNo" : $("#theater option:selected").val()},
-				success : function(data) {
-					console.log(data);
-					var korTitle = data[0].schedule.screen.movie.korTitle;
-					var theaterNo;
-					//alert(korTitle);				
-					for (i = 0; i < data.length; i++) {
-						if (data == "") {
-							korTitle = "";
-						} else {
-							korTitle += "<option value='"+data[i].movie.movieNo+"'>"
-									+ data[i].schedule.screen.movie.korTitle
-									+ "</option>";
-							theaterNo = data[i].theater.theaterNo
-						}
-					}
-					$("#movie").html(korTitle);
-					$('input[name=theaterNo]').attr('value', theaterNo);
-				}
-			});
-		});
+		$("#theater")
+				.change(
+						function() {
+							$
+									.ajax({
+										url : "selmovie.do",
+										type : "post",
+										timeout : 30000,
+										datatype : "json",
+										data : {
+											"theaterNo" : $(
+													"#theater option:selected")
+													.val()
+										},
+										success : function(data) {
+											console.log(data);
+											var korTitle = data[0].schedule.screen.movie.korTitle;
+											var theaterNo;
+											//alert(korTitle);				
+											for (i = 0; i < data.length; i++) {
+												if (data == "") {
+													korTitle = "";
+												} else {
+													korTitle += "<option value='"+data[i].movie.movieNo+"'>"
+															+ data[i].schedule.screen.movie.korTitle
+															+ "</option>";
+													theaterNo = data[i].theater.theaterNo
+												}
+											}
+											$("#movie").html(korTitle);
+											$('input[name=theaterNo]').attr(
+													'value', theaterNo);
+										}
+									});
+						});
 
 		var t = new Date();
 		var nowYear = t.getFullYear();
@@ -218,7 +225,7 @@
 			t.setDate(t.getDate() + 1);
 			//console.log(t.getDate());
 		}
-		$("#dateOl").html(selDate); 
+		$("#dateOl").html(selDate);
 
 	}); // end ready
 </script>
