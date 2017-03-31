@@ -8,29 +8,95 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Booking_Date</title>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="css/nomalize.css" rel="stylesheet">
-<link type="text/css" href="css/sel_date.css" rel="stylesheet">
+<link href="./font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="./css/nomalize.css" rel="stylesheet">
+<link type="text/css" href="./css/sel_date.css" rel="stylesheet">
 <style type="text/css">
 /* 네비게이션 바 */
-#header {width: 1000px;	padding: 0px;}
-.navbar-brand {padding-top: 10px; padding-right: 30px;}
-.navbar-default {background-color: white;}
-#menu li {border-left: 1px solid #EAEAEA; width: 112px;	height: 49px; text-align: center;}
-#liLogin {border-right: 1px solid #EAEAEA; width: 158px !important;}
-#menu li a {font-weight: bold;}
+#header {
+	width: 1000px;
+	padding: 0px;
+}
+
+.navbar-brand {
+	padding-top: 10px;
+	padding-right: 30px;
+}
+
+.navbar-default {
+	background-color: white;
+}
+
+#menu li {
+	border-left: 1px solid #EAEAEA;
+	width: 112px;
+	height: 49px;
+	text-align: center;
+}
+
+#liLogin {
+	border-right: 1px solid #EAEAEA;
+	width: 158px !important;
+}
+
+#menu li a {
+	font-weight: bold;
+}
 /* 예매페이지 */
-.col-md-6 {	padding: 0;}
-#line {	border-right: 1px solid #EAEAEA;}
-#detail { width: 1000px; height: 700px; border: 1px solid #EAEAEA; margin-top: 100px; box-shadow: 2px 2px 20px gray;}
-#detail h3 { color: #3F0099; margin: 0; font-weight: bold;}
-#titleBox {	background-color: #F6F6F6; padding: 20px 15px 20px 15px; border-bottom: 1px solid #EAEAEA;}
-#titleBox h3 { padding-bottom: 14px;}
+.col-md-6 {
+	padding: 0;
+}
+
+#line {
+	border-right: 1px solid #EAEAEA;
+}
+
+#detail {
+	width: 1000px;
+	height: 700px;
+	border: 1px solid #EAEAEA;
+	margin-top: 100px;
+	box-shadow: 2px 2px 20px gray;
+}
+
+#detail h3 {
+	color: #3F0099;
+	margin: 0;
+	font-weight: bold;
+}
+
+#titleBox {
+	background-color: #F6F6F6;
+	padding: 20px 15px 20px 15px;
+	border-bottom: 1px solid #EAEAEA;
+}
+
+#titleBox h3 {
+	padding-bottom: 14px;
+}
 /* 선택창 */
-#date {	overflow-y: scroll;	height: 582px; margin: 0 auto;}
-#time {	overflow-y: scroll;	height: 500px; margin: 0 auto;}
-#next {	text-align: center;	padding: 28px 10px; border-top: 1px solid #EAEAEA;}
-#dateOl { width: 2040px !important; left: 0px;}
+#date {
+	overflow-y: scroll;
+	height: 582px;
+	margin: 0 auto;
+}
+
+#time {
+	overflow-y: scroll;
+	height: 500px;
+	margin: 0 auto;
+}
+
+#next {
+	text-align: center;
+	padding: 28px 10px;
+	border-top: 1px solid #EAEAEA;
+}
+
+#dateOl {
+	width: 2040px !important;
+	left: 0px;
+}
 
 /* #nextHidden { display: none}; */
 </style>
@@ -39,7 +105,7 @@
 <script src="js/sel_time.js"></script>
 <script type="text/javascript">
 	// 시간 선택
-	function ajaxcall(where) {
+	 function ajaxcall(where) {
 
 		var temp = $(where).parent().attr("data-item");/* yyyy-mm-dd */
 
@@ -57,6 +123,7 @@
 					},
 			success : function(data) {
 				console.log(data);
+				
 				var movieTimes;
 				var movieNo;
 				var dayno;
@@ -67,6 +134,7 @@
 				}
 				$("#showTimes").html(movieTimes);
 				for (var i = 0; i < data.length; i++) {
+					console.log(data[i].schedule.startTime.hour)
 					movieTimes += "<tr><td>"
 								+ data[i].schedule.startTime.hour
 								+ ":"
@@ -90,6 +158,7 @@
 				/* $('input[name=dayno]').attr('value', temp);
 				$('input[name=scheduleNo]').attr('value', scheduleNo); */
 				}
+					
 			});
 	}
 	
@@ -149,7 +218,7 @@
 			t.setDate(t.getDate() + 1);
 			//console.log(t.getDate());
 		}
-		$("#dateOl").html(selDate);
+		$("#dateOl").html(selDate); 
 
 	}); // end ready
 </script>
@@ -160,7 +229,8 @@
 		<!-- 네비게이션 바 -->
 		<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="navbar-scroll">
 			<div class="container" id="header">
-				<a class="navbar-brand" href="#"> <img src="image/logo.png">
+				<a class="navbar-brand" href="#">
+					<img src="image/logo.png">
 				</a>
 				<ul class="nav navbar-nav" id="menu">
 					<li><a href="#">영화</a></li>
@@ -288,12 +358,9 @@
 					</table>
 				</div>
 				<div id="next">
-				
+
 					<form action="selseat.do" method="post">
-						<input type="text" name="audiNo" />
-						<input type="text" name="scheduleNo" />
-						<input type="reset" value="취소" />
-						<input type="submit" value="다음" />
+						<input type="text" name="audiNo" /> <input type="text" name="scheduleNo" /> <input type="reset" value="취소" /> <input type="submit" value="다음" />
 					</form>
 
 				</div>
@@ -302,7 +369,7 @@
 
 	</div>
 
-<!-- 	<form action="" name="info1">
+	<!-- 	<form action="" name="info1">
 		<input type="text" name="theaterNo" />
 		<input type="text" name="movieNo" /> 
 		<input type="text" name="dayno" class="hidden_date" />		

@@ -1,10 +1,17 @@
 package cinema.booking.handler;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
+import cinema.model.BookStepOne;
+import cinema.model.dao.BookingDao;
+import jdbc.ConnectionProvider;
 import jdbc.JdbcUtil;
 import mvc.controller.CommandHandler;
 
@@ -18,8 +25,8 @@ public class SelTheaterHandler implements CommandHandler {
 		int theaterVal = Integer.parseInt(theaterNo);
 
 		try {
-			/*conn = ConnectionProvider.getConnection();
-			BookingDao bookingDao = BookingDao.getInstance();
+			conn = ConnectionProvider.getConnection();
+			BookingDao bookingDao = new BookingDao();
 			List<BookStepOne> bookings = null;
 			bookings = bookingDao.selTheater(conn, theaterVal);
 
@@ -32,7 +39,7 @@ public class SelTheaterHandler implements CommandHandler {
 			res.setContentType("application/json;charset=utf-8");
 			PrintWriter pw = res.getWriter();
 			pw.print(json);
-			pw.flush();*/
+			pw.flush();
 		} finally {
 			JdbcUtil.close(conn);
 		}

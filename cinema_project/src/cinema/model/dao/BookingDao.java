@@ -5,9 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import cinema.model.Auditorium;
+import cinema.model.BookStepOne;
 import cinema.model.Booking;
+import cinema.model.Movie;
+import cinema.model.Schedule;
+import cinema.model.Screen;
+import cinema.model.Theater;
 import jdbc.JdbcUtil;
 
 public class BookingDao {
@@ -113,6 +120,173 @@ public class BookingDao {
 			pstmt.setInt(1, bookingNo);
 			pstmt.executeUpdate();
 		} finally {
+			JdbcUtil.close(pstmt);
+		}
+
+	}
+
+	// 극장 선택
+	public List<BookStepOne> selTheater(Connection conn, int no) throws SQLException {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select * from schedule sch left join (select s.*,m.title_kor, title_eng, actors, director, release_date, age_require, time_length, country, ratings, total_attendance, genre, content, small_pic_url, big_pic_url from screen s left join movie m on s.movie_no=m.movie_no) sr on sch.screen_no=sr.screen_no left join (select a.*,t.theater_name from auditorium a left join theater t on a.theater_no=t.theater_no) audi on sch.audi_no=audi.audi_no where theater_no = ? group by movie_no";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			BookStepOne bookStepOne = null;
+			if (rs.next()) {
+				List<BookStepOne> bookStepOnes = new ArrayList<>();
+				do {
+			
+					Theater theater = new Theater();
+					theater.setTheaterNo(rs.getInt("theater_no"));
+					theater.setTheaterName(rs.getString("theater_name"));
+
+			
+					Auditorium auditorium = new Auditorium();
+					auditorium.setAudiName(rs.getString("audi_name"));
+					auditorium.setAudiType(rs.getString("audi_type"));
+					auditorium.setFloor(rs.getString("floor"));
+					auditorium.setTheater(theater);
+
+	
+					Movie movie = new Movie();
+					movie.setMovieNo(rs.getInt("movie_no"));
+					movie.setKorTitle(rs.getString("title_kor"));
+					movie.setEngTitle(rs.getString("title_eng"));
+					movie.setDirector(rs.getString("director"));
+					movie.setActors(rs.getString("actors"));
+					movie.setReleaseDate(rs.getDate("release_date"));
+					movie.setAgeRequire(rs.getString("age_require"));
+					movie.setTimeLength(rs.getInt("time_length"));
+					movie.setCountry(rs.getString("country"));
+					movie.setRatings(rs.getInt("ratings"));
+					movie.setTotalAttendance(rs.getInt("total_attendance"));
+					movie.setGenre(rs.getString("genre"));
+					movie.setContent(rs.getString("content"));
+					movie.setSmallPicUrl(rs.getString("small_pic_url"));
+					movie.setBigPicUrl(rs.getString("big_pic_url"));
+
+
+					Screen screen = new Screen();
+
+					screen.setScreenNo(rs.getInt("screen_no"));
+					screen.setMovie(movie);
+					screen.setScreenMode(rs.getString("screen_mode"));
+					screen.setBuyDate(rs.getDate("buy_date"));
+					screen.setScreenPrice(rs.getLong("screen_price"));
+
+					screen.setSupplier(rs.getString("supplier"));
+					screen.setStartDate(rs.getDate("start_date"));
+					screen.setEndDate(rs.getDate("end_date"));
+
+	
+					Schedule schedule = new Schedule();
+					schedule.setScheduleNo(rs.getInt("schedule_no"));
+					schedule.setStartTime(rs.getTime("start_time").toLocalTime());
+					schedule.setEndTime(rs.getTime("end_time").toLocalTime());
+					schedule.setShowDate(rs.getDate("show_date"));
+					schedule.setAuditorium(auditorium);
+					schedule.setScreen(screen);
+
+					bookStepOne = new BookStepOne(schedule, screen, movie, auditorium, theater);
+					bookStepOnes.add(bookStepOne);
+				} while (rs.next());
+				return bookStepOnes;
+			} else {
+				return Collections.emptyList();
+			}
+		} finally {
+			JdbcUtil.close(rs);
+			JdbcUtil.close(pstmt);
+		}
+	}
+
+	public List<BookStepOne> selMovie(Connection conn, int theaterVal, int movieVal, String dataNo)
+			throws SQLException {
+		// 시간 선택
+
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = "select * from schedule sch "
+				+ "left join (select s.*,m.title_kor, title_eng, actors, director, release_date, age_require, time_length, country, ratings, total_attendance, genre, content, small_pic_url, big_pic_url from screen s left join movie m on s.movie_no=m.movie_no) sr on sch.screen_no=sr.screen_no "
+				+ "left join (select a.*,t.theater_name from auditorium a left join theater t on a.theater_no=t.theater_no) audi on sch.audi_no=audi.audi_no where theater_no = ? and movie_no = ? and show_date = ?";
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, theaterVal);
+			pstmt.setInt(2, movieVal);
+			pstmt.setString(3, dataNo);
+			rs = pstmt.executeQuery();
+			BookStepOne bookStepOne = null;
+			if (rs.next()) {
+				List<BookStepOne> bookStepOnes = new ArrayList<>();
+				do {
+
+					Theater theater = new Theater();
+					theater.setTheaterNo(rs.getInt("theater_no"));
+					theater.setTheaterName(rs.getString("theater_name"));
+
+					Auditorium auditorium = new Auditorium();
+					auditorium.setFloor(rs.getString("floor"));
+					auditorium.setAudiName(rs.getString("audi_name"));
+					auditorium.setAudiType(rs.getString("audi_type"));
+					auditorium.setFloor(rs.getString("floor"));
+					auditorium.setTheater(theater);
+					
+					
+					Movie movie = new Movie();
+					movie.setMovieNo(rs.getInt("movie_no"));
+					movie.setKorTitle(rs.getString("title_kor"));
+					movie.setEngTitle(rs.getString("title_eng"));
+					movie.setDirector(rs.getString("director"));
+					movie.setActors(rs.getString("actors"));
+					movie.setReleaseDate(rs.getDate("release_date"));
+					movie.setAgeRequire(rs.getString("age_require"));
+					movie.setTimeLength(rs.getInt("time_length"));
+					movie.setCountry(rs.getString("country"));
+					movie.setRatings(rs.getInt("ratings"));
+					movie.setTotalAttendance(rs.getInt("total_attendance"));
+					movie.setGenre(rs.getString("genre"));
+					movie.setContent(rs.getString("content"));
+					movie.setSmallPicUrl(rs.getString("small_pic_url"));
+					movie.setBigPicUrl(rs.getString("big_pic_url"));
+
+					
+					
+					Screen screen = new Screen();
+
+					screen.setScreenNo(rs.getInt("screen_no"));
+					screen.setMovie(movie);
+					screen.setScreenMode(rs.getString("screen_mode"));
+					screen.setBuyDate(rs.getDate("buy_date"));
+					screen.setScreenPrice(rs.getLong("screen_price"));
+
+					screen.setSupplier(rs.getString("supplier"));
+					screen.setStartDate(rs.getDate("start_date"));
+					screen.setEndDate(rs.getDate("end_date"));
+
+				
+					Schedule schedule = new Schedule();
+					schedule.setScheduleNo(rs.getInt("schedule_no"));
+					schedule.setStartTime(rs.getTime("start_time").toLocalTime());
+					schedule.setEndTime(rs.getTime("end_time").toLocalTime());
+					schedule.setShowDate(rs.getDate("show_date"));
+					schedule.setAuditorium(auditorium);
+					schedule.setScreen(screen);
+	
+					
+					bookStepOne = new BookStepOne(schedule, screen, movie, auditorium, theater);
+					bookStepOnes.add(bookStepOne);
+				} while (rs.next());
+				return bookStepOnes;
+			} else {
+				return Collections.emptyList();
+			}
+		} finally {
+			JdbcUtil.close(rs);
 			JdbcUtil.close(pstmt);
 		}
 

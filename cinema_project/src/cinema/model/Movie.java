@@ -11,11 +11,29 @@ public class Movie {
 	Date releaseDate;
 	String ageRequire;
 	int timeLength;
+	int ratings;
 	String country;
 	String genre;
 	String content;
 	String bigPicUrl;
 	String smallPicUrl;
+	int totalAttendance;
+
+	public int getTotalAttendance() {
+		return totalAttendance;
+	}
+
+	public void setTotalAttendance(int totalAttendance) {
+		this.totalAttendance = totalAttendance;
+	}
+
+	public int getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(int ratings) {
+		this.ratings = ratings;
+	}
 
 	public String getBigPicUrl() {
 		return bigPicUrl;
